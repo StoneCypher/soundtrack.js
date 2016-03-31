@@ -147,37 +147,45 @@ class soundtrack {
 
   add_player(options) {
 
-    var player             = new Audio(options.src);
-        player.autoplay    = true; // todo
-        player.currentTime = options.start_ofs;
+    var player             = new Audio(options.src),
+        last_stamp         = undefined,
+        last_stamp_ofs     = undefined,
+        started            = false;
 
-        if (options.loop) {
+    player.autoplay    = false; // todo
+    player.currentTime = options.start_ofs;
 
-          // if we&apos;re using offset controls, manage the loop manually
-          if ((options.end_ofs) || (options.loop_ofs)) {
 
-            var endline = (options.end_ofs / 1000);
+    if (options.loop) {
 
-            // todo: one that runs differently w/o end_ofs to get perfect endcuts
-            window.setInterval(function() {
+      // if we&apos;re using offset controls, manage the loop manually
+      if ((options.end_ofs) || (options.loop_ofs)) {
 
-              var end_cut = player.duration - endline;  // because that music might come in whenever, and this is less hassle than hooking the event
+        var endline = (options.end_ofs);
 
-              console.log((player.currentTime - end_cut).toPrecision(7));
+        // todo: one that runs differently w/o end_ofs to get perfect endcuts
+        window.setInterval(function() {
 
-              if (player.currentTime &gt; end_cut) {
-                player.currentTime = options.loop_ofs;
-                player.play();
-              }
+          var end_cut = (player.duration * 1000) - endline;  // because that music might come in whenever, and this is less hassle than hooking the event
 
-            }, 1);
+          console.log(`performance now - laststamp : ${(end_cut - (performance.now() - last_stamp)).toPrecision(9)}`);
 
-          // otherwise just use the browser looper
-          } else {
-            player.loop = true;
+          if ( (!started) || ((performance.now() - last_stamp) &gt; end_cut) ) {
+            started            = true;
+            player.currentTime = options.loop_ofs;
+            last_stamp_ofs     = 0;
+            last_stamp         = performance.now();
+            player.play();
           }
 
-        }
+        }, 1);
+
+      // otherwise just use the browser looper
+      } else {
+        player.loop = true;
+      }
+
+    }
 
     return this.players.push(player) - 1;
 

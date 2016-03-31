@@ -1,0 +1,44 @@
+{
+  "name": "soundtrack.js",
+  "version": "0.1.0",
+  "description": "Make handling the soundtracks to your HTML5/JS games somewhat easier. ES6/JS2015 with CommonJS bindings.",
+  "main": "soundtrack.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StoneCypher/soundtrack.js.git"
+  },
+  "keywords": [
+    "soundtrack",
+    "soundtrack.js",
+    "audio",
+    "mp3",
+    "wav",
+    "player",
+    "soundline",
+    "score",
+    "album"
+  ],
+  "author": "John Haugeland <stonecypher@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/StoneCypher/soundtrack.js/issues"
+  },
+  "homepage": "https://github.com/StoneCypher/soundtrack.js#readme",
+  "devDependencies": {
+    "babel": "^6.5.2",
+    "babel-preset-es2015": "^6.6.0",
+    "browserify": "^13.0.0",
+    "closure-compiler": "^0.2.12",
+    "del": "^2.2.0",
+    "google-closure-compiler": "^20160315.1.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-closure-compiler": "^0.4.0",
+    "gulp-esdoc": "^0.2.0",
+    "gulp-rename": "^1.2.2",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}

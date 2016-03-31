@@ -62,14 +62,13 @@ class soundtrack {
     this.tracksByName = {};
     this.playing      = false;
     this.ready        = false;
+    this.current      = undefined;
 
     var opts = options || {};
 
     this.loadtracks(opts.tracks);
 
     if ((opts.autoplay !== undefined) && (opts.autoplay !== false)) {
-
-      this.playing = true;
 
       switch(typeof opts.autoplay) {
 
@@ -87,11 +86,15 @@ class soundtrack {
 
 
   playByTrack(track) {
-    this.add_player(this.tracks[track]);
+    this.playing = true;
+    if (this.current !== undefined) { this.players[this.current].pause(); }
+    return this.current = this.add_player(this.tracks[track]);
   }
 
   playByName(track) {
-    console.log(`todo should play ${track} by name: ${this.tracks[this.tracksByName[track]]}`);
+    this.playing = true;
+    if (this.current !== undefined) { this.players[this.current].pause(); }
+    return this.current = this.add_player(this.tracks[this.tracksByName[track]]);
   }
 
 
@@ -100,8 +103,8 @@ class soundtrack {
 
     switch(typeof track) {
 
-      case 'number' : this.playByTrack(track); break;
-      case 'string' : this.playByName(track);  break;
+      case 'number' : return this.playByTrack(track); break;
+      case 'string' : return this.playByName(track);  break;
 
     }
 

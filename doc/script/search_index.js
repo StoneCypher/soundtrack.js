@@ -354,6 +354,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/soundtrack.js~soundtrack#current",
+    "class/src/soundtrack.js~soundtrack.html#instance-member-current",
+    "src/soundtrack.js~soundtrack#current",
+    "member"
+  ],
+  [
     "src/soundtrack.js~soundtrack#loadtracks",
     "class/src/soundtrack.js~soundtrack.html#instance-method-loadtracks",
     "src/soundtrack.js~soundtrack#loadtracks",

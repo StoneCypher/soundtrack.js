@@ -7,12 +7,15 @@
 
     <script defer type="text/javascript">
 
+      var soundtrack;
+
       window.onload = function() {
 
         var fineprecision = { name: 'ultralo' },
             catchyguitar  = { name: 'catchyguitar', end_ofs: 110 },
-            config        = { tracks: [fineprecision, catchyguitar], autoplay: 0 },
-            soundtrack    = new (require('soundtrack').soundtrack)(config);
+            config        = { tracks: [fineprecision, catchyguitar] };
+
+        soundtrack    = new (require('soundtrack').soundtrack)(config);
 
       };
 

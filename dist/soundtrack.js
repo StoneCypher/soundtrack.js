@@ -1,6 +1,18 @@
 
 'use strict';
 
+// todo: is this a smarter hook?  https://www.w3.org/TR/webaudio/#audio-glitching
+
+// todo: add callbacks for loop, hit-time
+// todo: allow a song to end by going to a different song, or a random from a list of songs
+// todo: fade-in, fade-out
+// todo: transition({mode: hard/fade-out/fade-out-in/fade-cross, delay, outtime, intime, shape: linear/ease})
+// todo: play, stop
+// todo: individual songs can override loop master
+// todo: remove tracklist
+// todo: getters and setters
+// todo: tests
+// todo: docs
 
 
 
@@ -21,7 +33,7 @@ function normalize_track(track) {
         src       = track.name + '.mp3', 
         start_ofs = 0,
         end_ofs   = 0,
-        loop_ofs  = 0,
+        loop_ofs  = track.start_ofs || 0,
         loop      = true
       } = track;
 
@@ -48,12 +60,16 @@ class soundtrack {
     this.players      = [];
     this.tracks       = [];
     this.tracksByName = {};
+    this.playing      = false;
+    this.ready        = false;
 
     var opts = options || {};
 
     this.loadtracks(opts.tracks);
 
     if ((opts.autoplay !== undefined) && (opts.autoplay !== false)) {
+
+      this.playing = true;
 
       switch(typeof opts.autoplay) {
 
@@ -112,40 +128,35 @@ class soundtrack {
         last_stamp_ofs     = undefined,
         started            = false;
 
-    player.autoplay    = false; // todo
-    player.currentTime = options.start_ofs;
+
+    player.autoplay    = false; 
+    player.currentTime = options.start_ofs / 1000;
+
+    var endline     = (options.end_ofs),
+        get_playing = () => this.playing,
+        set_ready   = to => this.ready = to,
+        get_ready   = () => this.ready;
+
+    player.oncanplaythrough = function() { set_ready(true); }
 
 
-    if (options.loop) {
+    window.setInterval(function() {
 
-      // if we're using offset controls, manage the loop manually
-      if ((options.end_ofs) || (options.loop_ofs)) {
+      var end_cut = (player.duration * 1000) - endline;  // todo: move this to one-time on player load, then add latching for initialization
 
-        var endline = (options.end_ofs);
+      if ( get_ready() && get_playing() && ( (!started) || ((performance.now() - last_stamp) > end_cut) ) ) {
 
-        // todo: one that runs differently w/o end_ofs to get perfect endcuts
-        window.setInterval(function() {
+        if (started) { player.currentTime = options.loop_ofs; }
 
-          var end_cut = (player.duration * 1000) - endline;  // because that music might come in whenever, and this is less hassle than hooking the event
+        started            = true;
+        last_stamp_ofs     = 0;
+        last_stamp         = performance.now();
 
-          console.log(`performance now - laststamp : ${(end_cut - (performance.now() - last_stamp)).toPrecision(9)}`);
+        player.play();
 
-          if ( (!started) || ((performance.now() - last_stamp) > end_cut) ) {
-            started            = true;
-            player.currentTime = options.loop_ofs;
-            last_stamp_ofs     = 0;
-            last_stamp         = performance.now();
-            player.play();
-          }
-
-        }, 1);
-
-      // otherwise just use the browser looper
-      } else {
-        player.loop = true;
       }
 
-    }
+    }, 1);
 
     return this.players.push(player) - 1;
 
@@ -154,5 +165,9 @@ class soundtrack {
 
 
 }
+
+
+
+
 
 export {soundtrack};

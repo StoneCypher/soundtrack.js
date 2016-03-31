@@ -1,22 +1,24 @@
 {
   "coverage": "0%",
-  "expectCount": 10,
+  "expectCount": 12,
   "actualCount": 0,
   "files": {
     "src/soundtrack.js": {
-      "expectCount": 10,
+      "expectCount": 12,
       "actualCount": 0,
       "undocumentLines": [
-        108,
-        46,
-        96,
-        83,
-        77,
-        73,
-        48,
-        42,
-        49,
-        50
+        124,
+        58,
+        112,
+        99,
+        93,
+        89,
+        60,
+        63,
+        64,
+        54,
+        61,
+        62
       ]
     }
   }

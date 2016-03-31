@@ -384,6 +384,18 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/soundtrack.js~soundtrack#playing",
+    "class/src/soundtrack.js~soundtrack.html#instance-member-playing",
+    "src/soundtrack.js~soundtrack#playing",
+    "member"
+  ],
+  [
+    "src/soundtrack.js~soundtrack#ready",
+    "class/src/soundtrack.js~soundtrack.html#instance-member-ready",
+    "src/soundtrack.js~soundtrack#ready",
+    "member"
+  ],
+  [
     "src/soundtrack.js~soundtrack#tracks",
     "class/src/soundtrack.js~soundtrack.html#instance-member-tracks",
     "src/soundtrack.js~soundtrack#tracks",

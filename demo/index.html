@@ -7,19 +7,14 @@
 
     <script defer type="text/javascript">
 
-      function demo() {
+      window.onload = function() {
 
-        var catchyguitar = { name: 'catchyguitar', end_ofs: 110 },
+        var fineprecision = { name: 'ultralo' },
+            catchyguitar  = { name: 'catchyguitar', end_ofs: 110 },
+            config        = { tracks: [fineprecision, catchyguitar], autoplay: 0 },
+            soundtrack    = new (require('soundtrack').soundtrack)(config);
 
-            config = {
-              tracks   : ['fineprecision-ultralo', catchyguitar],
-              autoplay : 1
-            },
-
-            soundtrack = new (require('soundtrack').soundtrack)(config);
-      }
-
-      window.onload = demo;
+      };
 
     </script>
 

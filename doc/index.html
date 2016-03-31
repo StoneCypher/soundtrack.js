@@ -39,6 +39,22 @@
 
 <div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="soundtrack-js">soundtrack.js</h1>
 <p>Make handling the soundtracks to your HTML5/JS games somewhat easier.  ES6/JS2015 with CommonJS bindings.</p>
+<h1 id="tl-dr">TL;DR</h1>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">  var soundtrack = require(&apos;soundtrack&apos;).soundtrack,
+      bg_track   = new soundtrack([ &apos;song1&apos;, &apos;song2&apos;, &apos;song3&apos; ]);
+
+  bg_track.play(&apos;song2&apos;);</code>
+</code></pre>
+<h1 id="what-s-the-point-">What&apos;s the point?</h1>
+<p>This library is primarily intended to make soundtracks out of loopable MP3s.</p>
+<p>Handling seamless looping music in JavaScript is surprisingly hard, because of the timing situation - 
+neither the HTML5 <code>Audio</code> object nor WebAudio <code>AudioContext</code>&apos;s events fire fast enough to handle seamless looping (the spec allows 15ms to 250ms.)  HTML5 <code>setInterval</code>, however, has been set to a floor of 4ms, 
+which is satisfactory.</p>
+<p>This library wraps up the ho-hum, teaches songs to know whether they loop, provides start, end, and loop
+points for songs, offers high resolution (4-6ms in practice, though undefined) callbacks for hitting music
+timings, and generally just makes it easier to deal with high resolution audio timing.</p>
+<h2 id="polemic-neckbeard-">Polemic :neckbeard:</h2>
+<p><code>soundtrack.js</code> is MIT licensed, because viral licenses and newspeak language modification are evil.<br>Free is <strong><em>only</em></strong> free when it&apos;s free for everyone.</p>
 </div>
 </div>
 

@@ -10,22 +10,88 @@
     "access": null,
     "description": null,
     "lineNumber": 2,
-    "content": "\r\n'use strict';\r\n\r\nvar hello = world;\r\n"
+    "content": "\r\n'use strict';\r\n\r\n\r\n\r\n\r\n\r\n\r\nfunction normalize_track(track) {\r\n\r\n  switch(typeof track) {\r\n\r\n    case 'object' : \r\n          \r\n      if ( (!(track.name)) && (!(track.src)) ) { \r\n        throw 'every track must have a name or a src: ' + JSON.stringify(track); \r\n      }\r\n          \r\n      var { \r\n        name      = track.src, \r\n        src       = track.name + '.mp3', \r\n        start_ofs = 0,\r\n        end_ofs   = 0,\r\n        loop_ofs  = 0,\r\n        loop      = true\r\n      } = track;\r\n\r\n      return { name, src, start_ofs, end_ofs, loop_ofs, loop };\r\n\r\n    case 'string' : \r\n\r\n      return normalize_track({ name: track });\r\n\r\n  }\r\n\r\n}\r\n\r\n\r\n\r\n\r\n\r\nclass soundtrack {\r\n\r\n\r\n\r\n  constructor(options) {\r\n\r\n    this.players      = [];\r\n    this.tracks       = [];\r\n    this.tracksByName = {};\r\n\r\n    var opts = options || {};\r\n\r\n    this.loadtracks(opts.tracks);\r\n\r\n    if ((opts.autoplay !== undefined) && (opts.autoplay !== false)) {\r\n\r\n      switch(typeof opts.autoplay) {\r\n\r\n        case 'number' : \r\n        case 'string'  : this.play(opts.autoplay); break;\r\n\r\n        case 'boolean' : this.play(0);             break;\r\n\r\n      }\r\n\r\n    }\r\n\r\n  }\r\n\r\n\r\n\r\n  playByTrack(track) {\r\n    this.add_player(this.tracks[track]);\r\n  }\r\n\r\n  playByName(track) {\r\n    console.log(`todo should play ${track} by name: ${this.tracks[this.tracksByName[track]]}`);\r\n  }\r\n\r\n\r\n\r\n  play(track) {\r\n\r\n    switch(typeof track) {\r\n\r\n      case 'number' : this.playByTrack(track); break;\r\n      case 'string' : this.playByName(track);  break;\r\n\r\n    }\r\n\r\n  }\r\n\r\n\r\n\r\n  loadtracks(tracks) {\r\n\r\n    this.tracks = this.tracks.concat(tracks.map(normalize_track) || []);\r\n\r\n    this.tracks.map( (track,i) => {\r\n        if (track.name) { this.tracksByName[track.name] = i; }\r\n    });\r\n\r\n  }\r\n\r\n\r\n\r\n  add_player(options) {\r\n\r\n    var player             = new Audio(options.src);\r\n        player.autoplay    = true; // todo\r\n        player.currentTime = options.start_ofs;\r\n\r\n        if (options.loop) {\r\n\r\n          // if we're using offset controls, manage the loop manually\r\n          if ((options.end_ofs) || (options.loop_ofs)) {\r\n\r\n            var endline = (options.end_ofs / 1000);\r\n\r\n            // todo: one that runs differently w/o end_ofs to get perfect endcuts\r\n            window.setInterval(function() {\r\n\r\n              var end_cut = player.duration - endline;  // because that music might come in whenever, and this is less hassle than hooking the event\r\n\r\n              console.log((player.currentTime - end_cut).toPrecision(7));\r\n\r\n              if (player.currentTime > end_cut) {\r\n                player.currentTime = options.loop_ofs;\r\n                player.play();\r\n              }\r\n\r\n            }, 1);\r\n\r\n          // otherwise just use the browser looper\r\n          } else {\r\n            player.loop = true;\r\n          }\r\n\r\n        }\r\n\r\n    return this.players.push(player) - 1;\r\n\r\n  }\r\n\r\n\r\n\r\n}\r\n\r\nexport {soundtrack};\r\n"
   },
   {
     "__docId__": 1,
-    "kind": "variable",
+    "kind": "function",
     "static": true,
     "variation": null,
-    "name": "hello",
+    "name": "normalize_track",
     "memberof": "src/soundtrack.js",
-    "longname": "src/soundtrack.js~hello",
+    "longname": "src/soundtrack.js~normalize_track",
     "access": null,
     "export": false,
     "importPath": "soundtrack.js/src/soundtrack.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 4,
+    "lineNumber": 9,
+    "undocument": true,
+    "params": [
+      {
+        "name": "track",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 2,
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "soundtrack",
+    "memberof": "src/soundtrack.js",
+    "longname": "src/soundtrack.js~soundtrack",
+    "access": null,
+    "export": true,
+    "importPath": "soundtrack.js/src/soundtrack.js",
+    "importStyle": "{soundtrack}",
+    "description": null,
+    "lineNumber": 42,
+    "undocument": true,
+    "interface": false
+  },
+  {
+    "__docId__": 3,
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "src/soundtrack.js~soundtrack",
+    "longname": "src/soundtrack.js~soundtrack#constructor",
+    "access": null,
+    "description": null,
+    "lineNumber": 46,
+    "undocument": true,
+    "params": [
+      {
+        "name": "options",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 4,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "players",
+    "memberof": "src/soundtrack.js~soundtrack",
+    "longname": "src/soundtrack.js~soundtrack#players",
+    "access": null,
+    "description": null,
+    "lineNumber": 48,
     "undocument": true,
     "type": {
       "types": [
@@ -34,7 +100,176 @@
     }
   },
   {
-    "__docId__": 3,
+    "__docId__": 5,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "tracks",
+    "memberof": "src/soundtrack.js~soundtrack",
+    "longname": "src/soundtrack.js~soundtrack#tracks",
+    "access": null,
+    "description": null,
+    "lineNumber": 49,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 6,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "tracksByName",
+    "memberof": "src/soundtrack.js~soundtrack",
+    "longname": "src/soundtrack.js~soundtrack#tracksByName",
+    "access": null,
+    "description": null,
+    "lineNumber": 50,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 7,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "playByTrack",
+    "memberof": "src/soundtrack.js~soundtrack",
+    "longname": "src/soundtrack.js~soundtrack#playByTrack",
+    "access": null,
+    "description": null,
+    "lineNumber": 73,
+    "undocument": true,
+    "params": [
+      {
+        "name": "track",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 8,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "playByName",
+    "memberof": "src/soundtrack.js~soundtrack",
+    "longname": "src/soundtrack.js~soundtrack#playByName",
+    "access": null,
+    "description": null,
+    "lineNumber": 77,
+    "undocument": true,
+    "params": [
+      {
+        "name": "track",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 9,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "play",
+    "memberof": "src/soundtrack.js~soundtrack",
+    "longname": "src/soundtrack.js~soundtrack#play",
+    "access": null,
+    "description": null,
+    "lineNumber": 83,
+    "undocument": true,
+    "params": [
+      {
+        "name": "track",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 10,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "loadtracks",
+    "memberof": "src/soundtrack.js~soundtrack",
+    "longname": "src/soundtrack.js~soundtrack#loadtracks",
+    "access": null,
+    "description": null,
+    "lineNumber": 96,
+    "undocument": true,
+    "params": [
+      {
+        "name": "tracks",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "generator": false
+  },
+  {
+    "__docId__": 11,
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "tracks",
+    "memberof": "src/soundtrack.js~soundtrack",
+    "longname": "src/soundtrack.js~soundtrack#tracks",
+    "access": null,
+    "description": null,
+    "lineNumber": 98,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 12,
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "add_player",
+    "memberof": "src/soundtrack.js~soundtrack",
+    "longname": "src/soundtrack.js~soundtrack#add_player",
+    "access": null,
+    "description": null,
+    "lineNumber": 108,
+    "undocument": true,
+    "params": [
+      {
+        "name": "options",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 14,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -47,7 +282,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 4,
+    "__docId__": 15,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -60,7 +295,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 5,
+    "__docId__": 16,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -73,7 +308,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 6,
+    "__docId__": 17,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -86,7 +321,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 7,
+    "__docId__": 18,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -99,7 +334,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 8,
+    "__docId__": 19,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -112,7 +347,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 9,
+    "__docId__": 20,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -125,7 +360,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 10,
+    "__docId__": 21,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -138,7 +373,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 11,
+    "__docId__": 22,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -151,7 +386,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 12,
+    "__docId__": 23,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -164,7 +399,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 13,
+    "__docId__": 24,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -177,7 +412,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 14,
+    "__docId__": 25,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -190,7 +425,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 15,
+    "__docId__": 26,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -203,7 +438,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 16,
+    "__docId__": 27,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -216,7 +451,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 17,
+    "__docId__": 28,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -229,7 +464,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 18,
+    "__docId__": 29,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -242,7 +477,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 19,
+    "__docId__": 30,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -255,7 +490,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 20,
+    "__docId__": 31,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -268,7 +503,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 21,
+    "__docId__": 32,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -281,7 +516,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 22,
+    "__docId__": 33,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -294,7 +529,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 23,
+    "__docId__": 34,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -307,7 +542,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 24,
+    "__docId__": 35,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -320,7 +555,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 25,
+    "__docId__": 36,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -333,7 +568,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 26,
+    "__docId__": 37,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -346,7 +581,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 27,
+    "__docId__": 38,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -359,7 +594,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 28,
+    "__docId__": 39,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -372,7 +607,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 29,
+    "__docId__": 40,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -385,7 +620,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 30,
+    "__docId__": 41,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -398,7 +633,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 31,
+    "__docId__": 42,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -411,7 +646,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 32,
+    "__docId__": 43,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -424,7 +659,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 33,
+    "__docId__": 44,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -437,7 +672,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 34,
+    "__docId__": 45,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -450,7 +685,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 35,
+    "__docId__": 46,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -463,7 +698,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 36,
+    "__docId__": 47,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -476,7 +711,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 37,
+    "__docId__": 48,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -489,7 +724,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 38,
+    "__docId__": 49,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -502,7 +737,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 39,
+    "__docId__": 50,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -515,7 +750,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 40,
+    "__docId__": 51,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -528,7 +763,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 41,
+    "__docId__": 52,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -541,7 +776,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 42,
+    "__docId__": 53,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -554,7 +789,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 43,
+    "__docId__": 54,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -567,7 +802,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 44,
+    "__docId__": 55,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -580,7 +815,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 45,
+    "__docId__": 56,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -593,7 +828,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 46,
+    "__docId__": 57,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -606,7 +841,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 47,
+    "__docId__": 58,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -619,7 +854,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 48,
+    "__docId__": 59,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -632,7 +867,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 49,
+    "__docId__": 60,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -645,7 +880,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 51,
+    "__docId__": 62,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -658,7 +893,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 52,
+    "__docId__": 63,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -671,7 +906,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 53,
+    "__docId__": 64,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -684,7 +919,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 54,
+    "__docId__": 65,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -697,7 +932,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 55,
+    "__docId__": 66,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -710,7 +945,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 56,
+    "__docId__": 67,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -723,7 +958,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 57,
+    "__docId__": 68,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -736,7 +971,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 58,
+    "__docId__": 69,
     "kind": "external",
     "static": true,
     "variation": null,

@@ -1,5 +1,11 @@
 window.esdocSearchIndex = [
   [
+    "soundtrack.js/src/soundtrack.js~soundtrack",
+    "class/src/soundtrack.js~soundtrack.html",
+    "<span>soundtrack</span> <span class=\"search-result-import-path\">soundtrack.js/src/soundtrack.js</span>",
+    "class"
+  ],
+  [
     "builtinexternal/ecmascriptexternal.js~array",
     "external/index.html",
     "BuiltinExternal/ECMAScriptExternal.js~Array",
@@ -334,5 +340,59 @@ window.esdocSearchIndex = [
     "file/src/soundtrack.js.html",
     "src/soundtrack.js",
     "file"
+  ],
+  [
+    "src/soundtrack.js~soundtrack#add_player",
+    "class/src/soundtrack.js~soundtrack.html#instance-method-add_player",
+    "src/soundtrack.js~soundtrack#add_player",
+    "method"
+  ],
+  [
+    "src/soundtrack.js~soundtrack#constructor",
+    "class/src/soundtrack.js~soundtrack.html#instance-constructor-constructor",
+    "src/soundtrack.js~soundtrack#constructor",
+    "method"
+  ],
+  [
+    "src/soundtrack.js~soundtrack#loadtracks",
+    "class/src/soundtrack.js~soundtrack.html#instance-method-loadtracks",
+    "src/soundtrack.js~soundtrack#loadtracks",
+    "method"
+  ],
+  [
+    "src/soundtrack.js~soundtrack#play",
+    "class/src/soundtrack.js~soundtrack.html#instance-method-play",
+    "src/soundtrack.js~soundtrack#play",
+    "method"
+  ],
+  [
+    "src/soundtrack.js~soundtrack#playbyname",
+    "class/src/soundtrack.js~soundtrack.html#instance-method-playByName",
+    "src/soundtrack.js~soundtrack#playByName",
+    "method"
+  ],
+  [
+    "src/soundtrack.js~soundtrack#playbytrack",
+    "class/src/soundtrack.js~soundtrack.html#instance-method-playByTrack",
+    "src/soundtrack.js~soundtrack#playByTrack",
+    "method"
+  ],
+  [
+    "src/soundtrack.js~soundtrack#players",
+    "class/src/soundtrack.js~soundtrack.html#instance-member-players",
+    "src/soundtrack.js~soundtrack#players",
+    "member"
+  ],
+  [
+    "src/soundtrack.js~soundtrack#tracks",
+    "class/src/soundtrack.js~soundtrack.html#instance-member-tracks",
+    "src/soundtrack.js~soundtrack#tracks",
+    "member"
+  ],
+  [
+    "src/soundtrack.js~soundtrack#tracksbyname",
+    "class/src/soundtrack.js~soundtrack.html#instance-member-tracksByName",
+    "src/soundtrack.js~soundtrack#tracksByName",
+    "member"
   ]
 ]

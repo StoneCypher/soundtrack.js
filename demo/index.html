@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+
+  <head>
+
+    <script defer type="text/javascript" src="../dist/soundtrack.es5.js"></script>
+
+    <script defer type="text/javascript">
+
+      function demo() {
+
+        var catchyguitar = { name: 'catchyguitar', end_ofs: 180 },
+
+            config = {
+              tracks   : ['fineprecision-ultralo', catchyguitar],
+              autoplay : 1
+            },
+
+            soundtrack = new (require('soundtrack').soundtrack)(config);
+      }
+
+      window.onload = demo;
+
+    </script>
+
+  </head>
+
+  <body>
+  </body>
+
+</html>

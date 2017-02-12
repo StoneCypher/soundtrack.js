@@ -22,15 +22,15 @@ function normalize_track(track) {
 
   switch(typeof track) {
 
-    case 'object' : 
-          
-      if ( (!(track.name)) && (!(track.src)) ) { 
-        throw 'every track must have a name or a src: ' + JSON.stringify(track); 
+    case 'object' :
+
+      if ( (!(track.name)) && (!(track.src)) ) {
+        throw 'every track must have a name or a src: ' + JSON.stringify(track);
       }
-          
-      var { 
-        name      = track.src, 
-        src       = track.name + '.mp3', 
+
+      var {
+        name      = track.src,
+        src       = track.name + '.mp3',
         start_ofs = 0,
         end_ofs   = 0,
         loop_ofs  = track.start_ofs || 0,
@@ -39,7 +39,7 @@ function normalize_track(track) {
 
       return { name, src, start_ofs, end_ofs, loop_ofs, loop };
 
-    case 'string' : 
+    case 'string' :
 
       return normalize_track({ name: track });
 
@@ -57,6 +57,10 @@ class soundtrack {
 
   constructor(options) {
 
+    if (Array.isArray(options)) {
+        options = { tracks: options };
+    }
+
     this.players      = [];
     this.tracks       = [];
     this.tracksByName = {};
@@ -64,7 +68,7 @@ class soundtrack {
     this.ready        = false;
     this.current      = undefined;
 
-    var opts = options || {};
+    var opts = options || { tracks: [] };
 
     this.loadtracks(opts.tracks);
 
@@ -72,7 +76,7 @@ class soundtrack {
 
       switch(typeof opts.autoplay) {
 
-        case 'number' : 
+        case 'number' :
         case 'string'  : this.play(opts.autoplay); break;
 
         case 'boolean' : this.play(0);             break;
@@ -132,7 +136,7 @@ class soundtrack {
         started            = false;
 
 
-    player.autoplay    = false; 
+    player.autoplay    = false;
     player.currentTime = options.start_ofs / 1000;
 
     var endline     = (options.end_ofs),
@@ -173,4 +177,4 @@ class soundtrack {
 
 
 
-export {soundtrack};
+export { soundtrack, normalize_track };

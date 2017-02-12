@@ -63,9 +63,10 @@ gulp.task('browserify', ['babel'], function() {
 
   return bpack
     .require('./dist/soundtrack.es5.js', { 'expose' : 'soundtrack.js' })
+//  .external('soundtrack.js')
     .bundle()
     .on('error', errorHandler)
-    .pipe(source('soundtrack.es5.js'))
+    .pipe(source('soundtrack.es5.browserify.js'))
     .pipe(gulp.dest('./dist'));
 
 });
@@ -76,11 +77,11 @@ gulp.task('browserify', ['babel'], function() {
 
 gulp.task('closure5', ['build'], function() {
 
-  return gulp.src('dist/soundtrack.es5.js')
+  return gulp.src('dist/soundtrack.es5.browserify.js')
 
     .pipe(closure( {
       compilerPath: 'node_modules/closure-compiler/node_modules/google-closure-compiler/compiler.jar',
-      fileName: 'soundtrack.es5.min.js'
+      fileName: 'soundtrack.es5.browserify.min.js'
     } ))
 
     .pipe(gulp.dest('./dist'));

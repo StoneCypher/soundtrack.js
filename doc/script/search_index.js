@@ -1,5 +1,11 @@
 window.esdocSearchIndex = [
   [
+    "soundtrack.js/src/soundtrack.js~normalize_track",
+    "function/index.html#static-function-normalize_track",
+    "<span>normalize_track</span> <span class=\"search-result-import-path\">soundtrack.js/src/soundtrack.js</span>",
+    "function"
+  ],
+  [
     "soundtrack.js/src/soundtrack.js~soundtrack",
     "class/src/soundtrack.js~soundtrack.html",
     "<span>soundtrack</span> <span class=\"search-result-import-path\">soundtrack.js/src/soundtrack.js</span>",

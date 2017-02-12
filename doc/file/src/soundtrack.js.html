@@ -33,6 +33,7 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/soundtrack.js~soundtrack.html">soundtrack</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-normalize_track">normalize_track</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -62,15 +63,15 @@ function normalize_track(track) {
 
   switch(typeof track) {
 
-    case &apos;object&apos; : 
-          
-      if ( (!(track.name)) &amp;&amp; (!(track.src)) ) { 
-        throw &apos;every track must have a name or a src: &apos; + JSON.stringify(track); 
+    case &apos;object&apos; :
+
+      if ( (!(track.name)) &amp;&amp; (!(track.src)) ) {
+        throw &apos;every track must have a name or a src: &apos; + JSON.stringify(track);
       }
-          
-      var { 
-        name      = track.src, 
-        src       = track.name + &apos;.mp3&apos;, 
+
+      var {
+        name      = track.src,
+        src       = track.name + &apos;.mp3&apos;,
         start_ofs = 0,
         end_ofs   = 0,
         loop_ofs  = track.start_ofs || 0,
@@ -79,7 +80,7 @@ function normalize_track(track) {
 
       return { name, src, start_ofs, end_ofs, loop_ofs, loop };
 
-    case &apos;string&apos; : 
+    case &apos;string&apos; :
 
       return normalize_track({ name: track });
 
@@ -97,6 +98,10 @@ class soundtrack {
 
   constructor(options) {
 
+    if (Array.isArray(options)) {
+        options = { tracks: options };
+    }
+
     this.players      = [];
     this.tracks       = [];
     this.tracksByName = {};
@@ -104,7 +109,7 @@ class soundtrack {
     this.ready        = false;
     this.current      = undefined;
 
-    var opts = options || {};
+    var opts = options || { tracks: [] };
 
     this.loadtracks(opts.tracks);
 
@@ -112,7 +117,7 @@ class soundtrack {
 
       switch(typeof opts.autoplay) {
 
-        case &apos;number&apos; : 
+        case &apos;number&apos; :
         case &apos;string&apos;  : this.play(opts.autoplay); break;
 
         case &apos;boolean&apos; : this.play(0);             break;
@@ -172,7 +177,7 @@ class soundtrack {
         started            = false;
 
 
-    player.autoplay    = false; 
+    player.autoplay    = false;
     player.currentTime = options.start_ofs / 1000;
 
     var endline     = (options.end_ofs),
@@ -213,7 +218,7 @@ class soundtrack {
 
 
 
-export {soundtrack};
+export { soundtrack, normalize_track };
 </code></pre>
 
 </div>

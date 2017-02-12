@@ -1,8 +1,8 @@
 {
   "name": "soundtrack.js",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Make handling the soundtracks to your HTML5/JS games somewhat easier. ES6/JS2015 with CommonJS bindings.",
-  "main": "soundtrack.js",
+  "main": "dist/soundtrack.es5.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -58,11 +58,11 @@ gulp.task('clean', function(done) {
 
 gulp.task('browserify', ['babel'], function() {
 
-  var browserifyConfig = {}, 
+  var browserifyConfig = {},
       bpack            = browserify(browserifyConfig, { 'debug' : !production });
 
   return bpack
-    .require('./dist/soundtrack.es5.js', { 'expose' : 'soundtrack' })
+    .require('./dist/soundtrack.es5.js', { 'expose' : 'soundtrack.js' })
     .bundle()
     .on('error', errorHandler)
     .pipe(source('soundtrack.es5.js'))
@@ -82,7 +82,7 @@ gulp.task('closure5', ['build'], function() {
       compilerPath: 'node_modules/closure-compiler/node_modules/google-closure-compiler/compiler.jar',
       fileName: 'soundtrack.es5.min.js'
     } ))
-    
+
     .pipe(gulp.dest('./dist'));
 
 });

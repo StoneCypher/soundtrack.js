@@ -210,6 +210,9 @@ class soundtrack {
   // stop
   // pause
   // seek
+  // fade out
+  // fade switch
+  // play variant with fade in
 
 
 

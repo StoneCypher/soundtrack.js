@@ -11,7 +11,8 @@
     "rollup": "rollup -c",
     "terser": "terser -c --ecma 2015 --module -o dist/soundtrack.js build/rollup/index.js",
     "terser_cjs": "terser -c -o dist/soundtrack.cjs build/rollup/index.cjs",
-    "build": "npm run clean && npm run typescript && npm run rollup && npm run terser && npm run terser_cjs",
+    "typedoc": "typedoc ./src/ts/index.ts --out ./docs/docs/",
+    "build": "npm run clean && npm run typescript && npm run rollup && npm run terser && npm run terser_cjs && npm run typedoc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -42,6 +43,7 @@
     "rimraf": "^5.0.5",
     "rollup": "^4.9.5",
     "terser": "^5.26.0",
+    "typedoc": "^0.25.7",
     "typescript": "^5.3.3"
   }
 }

@@ -37,40 +37,6 @@ type TrackDefsOrNames = (TrackDefinition | string)[];
 
 
 
-function normalize_track(track: TrackDefinition | string) {
-
-  switch(typeof track) {
-
-
-    case 'object' :
-
-      if (!(track.name)) {
-        throw new Error(`New track definition missing name in normalize_track/1: ${JSON.stringify(track)}`);
-      }
-
-      let name         = track.name,
-          src          = track.src          ?? (track.name + '.mp3'),
-          start_offset = track.start_offset ?? 0,
-          end_offset   = track.end_offset   ?? 0,
-          loop_offset  = track.loop_offset  ?? 0,
-          loop         = track.loop         ?? true;
-
-      return { name, src, start_offset, end_offset, loop_offset, loop };
-
-
-    case 'string' :
-
-      return normalize_track({ name: track });
-
-
-  }
-
-}
-
-
-
-
-
 type ConstructorOptions = {
 
   autoplay ? : boolean | string | number | undefined,
@@ -82,29 +48,29 @@ type ConstructorOptions = {
 
 
 
-class soundtrack {
+class Soundtrack {
 
 
 
-  _tracks         : TrackDefinition[];
-  _tracks_by_name : Map<string, number>;
+  #tracks         : TrackDefinition[];
+  #tracks_by_name : Map<string, number>;
 
-  _ready          : boolean;
-  _playing        : boolean;
-  _current        : number | undefined;
+  #ready          : boolean;
+  #playing        : boolean;
+  #current        : number | undefined;
 
-  _players        : HTMLAudioElement[];
+  #players        : HTMLAudioElement[];
 
 
 
   constructor(options? : ConstructorOptions) {
 
-    this._players        = [];
-    this._tracks         = [];
-    this._tracks_by_name = new Map();
-    this._playing        = false;
-    this._ready          = false;
-    this._current        = undefined;
+    this.#players        = [];
+    this.#tracks         = [];
+    this.#tracks_by_name = new Map();
+    this.#playing        = false;
+    this.#ready          = false;
+    this.#current        = undefined;
 
 
     let opts: ConstructorOptions = options || { tracks: [], autoplay: false };
@@ -140,11 +106,11 @@ class soundtrack {
 
   play_by_track_number(track_number: number) {
 
-    this._playing = true;
+    this.#playing = true;
 
-    if (this._current !== undefined) {
+    if (this.#current !== undefined) {
 
-      const this_player = this._players[this._current];
+      const this_player = this.#players[this.#current];
 
       if (this_player === undefined) {
         throw new Error(`Player ${this_player}, referred to as current, does not exist`)
@@ -154,7 +120,7 @@ class soundtrack {
 
     }
 
-    const player = this._players[track_number];
+    const player = this.#players[track_number];
 
     if (player === undefined) {
       throw new Error(`No such track number ${track_number}`);
@@ -162,7 +128,7 @@ class soundtrack {
       player.play();
     }
 
-    return this._current = track_number;
+    return this.#current = track_number;
 
   }
 
@@ -222,7 +188,7 @@ class soundtrack {
 
     // scan once for problems before making changes
     tracks
-      .map( normalize_track )
+      .map( this.normalize_track )
       .forEach(t => {
         if (this.has_track(t.name)) {
           throw new Error(`One or more of the listed tracks is already present: ${t}`);
@@ -233,10 +199,11 @@ class soundtrack {
     // scan again to make changes
     tracks.forEach(t => {
 
-      const norm    = normalize_track(t),
-            new_idx = this._tracks.push(norm) - 1;
+      const norm    = this.normalize_track(t),
+            new_idx = this.#tracks.push(norm) - 1;
 
-      this._tracks_by_name.set(norm.name, new_idx);
+      this.#tracks_by_name.set(norm.name, new_idx);
+      this.#add_player(norm);
 
     });
 
@@ -247,7 +214,7 @@ class soundtrack {
 
 
   name_to_track_number(name: string) {
-    return this._tracks_by_name.get(name);
+    return this.#tracks_by_name.get(name);
   }
 
 
@@ -255,7 +222,7 @@ class soundtrack {
 
 
   has_track(name: string) {
-    return this._tracks_by_name.has(name);
+    return this.#tracks_by_name.has(name);
   }
 
 
@@ -263,7 +230,7 @@ class soundtrack {
 
 
   get is_playing() {
-    return this._playing;
+    return this.#playing;
   }
 
 
@@ -271,14 +238,14 @@ class soundtrack {
 
 
   get is_ready() {
-    return this._ready;
+    return this.#ready;
   }
 
 
 
 
 
-  add_player(options: TrackDefinition) {
+  #add_player(options: TrackDefinition) {
 
     let player               = new Audio(options.src),
         last_stamp : number  = 0,
@@ -289,7 +256,7 @@ class soundtrack {
     player.currentTime = (options.start_offset ?? 0) / 1000;
 
     let endline   = (options.end_offset),
-        set_ready = (to: boolean) => this._ready = to;
+        set_ready = (to: boolean) => this.#ready = to;
 
     player.oncanplaythrough = function() { set_ready(true); }
 
@@ -319,7 +286,42 @@ class soundtrack {
 
     }, 1);
 
-    return this._players.push(player) - 1;
+
+    return this.#players.push(player) - 1;
+
+  }
+
+
+
+
+
+  normalize_track(track: TrackDefinition | string): TrackDefinition {
+
+    switch(typeof track) {
+
+
+      case 'object' :
+
+        if (!(track.name)) {
+          throw new Error(`New track definition missing name in normalize_track/1: ${JSON.stringify(track)}`);
+        }
+
+        let name         = track.name,
+            src          = track.src          ?? (track.name + '.mp3'),
+            start_offset = track.start_offset ?? 0,
+            end_offset   = track.end_offset   ?? 0,
+            loop_offset  = track.loop_offset  ?? 0,
+            loop         = track.loop         ?? true;
+
+        return { name, src, start_offset, end_offset, loop_offset, loop };
+
+
+      case 'string' :
+
+        return this.normalize_track({ name: track });
+
+
+    }
 
   }
 
@@ -331,4 +333,4 @@ class soundtrack {
 
 
 
-export { soundtrack, normalize_track };
+export { Soundtrack };

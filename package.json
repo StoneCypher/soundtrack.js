@@ -1,6 +1,6 @@
 {
   "name": "soundtrack.js",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "type": "module",
   "description": "Make handling the soundtracks to your HTML5/JS games somewhat easier. ES6/JS2015 with CommonJS bindings.",
   "module": "dist/soundtrack.js",
@@ -12,8 +12,9 @@
     "terser": "terser -c --ecma 2015 --module -o dist/soundtrack.js build/rollup/index.js",
     "terser_cjs": "terser -c -o dist/soundtrack.cjs build/rollup/index.cjs",
     "typedoc": "typedoc ./src/ts/index.ts --out ./docs/docs/",
+    "site": "cp ./dist/soundtrack.cs ./docs/demo/ && cp ./src/site -r ./docs/",
     "build": "npm run clean && npm run typescript && npm run rollup && npm run terser && npm run terser_cjs && npm run typedoc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest run --coverage --mode development --reporter=verbose"
   },
   "repository": {
     "type": "git",
@@ -40,10 +41,12 @@
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-replace": "^5.0.5",
+    "@vitest/coverage-v8": "^1.2.0",
     "rimraf": "^5.0.5",
     "rollup": "^4.9.5",
     "terser": "^5.26.0",
     "typedoc": "^0.25.7",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0"
   }
 }

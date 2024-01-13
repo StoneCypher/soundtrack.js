@@ -1,13 +1,14 @@
 {
   "name": "soundtrack.js",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "type": "module",
   "description": "Make handling the soundtracks to your HTML5/JS games somewhat easier. ES6/JS2015 with CommonJS bindings.",
   "module": "dist/soundtrack.js",
   "main": "dist/soundtrack.cjs",
   "scripts": {
     "clean": "rimraf docs && mkdir docs && rimraf build && mkdir build && cd build && mkdir typescript && mkdir rollup && mkdir terser && cd ..",
-    "build": "npm run clean",
+    "typescript": "tsc --build tsconfig.json",
+    "build": "npm run clean && npm run typescript",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -32,6 +33,7 @@
   },
   "homepage": "https://github.com/StoneCypher/soundtrack.js#readme",
   "devDependencies": {
-    "rimraf": "^5.0.5"
+    "rimraf": "^5.0.5",
+    "typescript": "^5.3.3"
   }
 }

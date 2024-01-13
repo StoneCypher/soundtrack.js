@@ -1,15 +1,17 @@
 {
   "name": "soundtrack.js",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "type": "module",
   "description": "Make handling the soundtracks to your HTML5/JS games somewhat easier. ES6/JS2015 with CommonJS bindings.",
   "module": "dist/soundtrack.js",
   "main": "dist/soundtrack.cjs",
   "scripts": {
-    "clean": "rimraf docs && mkdir docs && cd docs && mkdir docs && mkdir demo && cd .. && rimraf build && mkdir build && cd build && mkdir typescript && mkdir rollup && mkdir terser && cd ..",
+    "clean": "rimraf dist && mkdir dist && rimraf docs && mkdir docs && cd docs && mkdir docs && mkdir demo && cd .. && rimraf build && mkdir build && cd build && mkdir typescript && mkdir rollup && mkdir terser && cd ..",
     "typescript": "tsc --build tsconfig.json",
     "rollup": "rollup -c",
-    "build": "npm run clean && npm run typescript && npm run rollup",
+    "terser": "terser -c --ecma 2015 --module -o dist/soundtrack.js build/rollup/index.js",
+    "terser_cjs": "terser -c -o dist/soundtrack.cjs build/rollup/index.cjs",
+    "build": "npm run clean && npm run typescript && npm run rollup && npm run terser && npm run terser_cjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -39,6 +41,7 @@
     "@rollup/plugin-replace": "^5.0.5",
     "rimraf": "^5.0.5",
     "rollup": "^4.9.5",
+    "terser": "^5.26.0",
     "typescript": "^5.3.3"
   }
 }

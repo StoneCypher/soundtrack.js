@@ -14,8 +14,17 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20.x, 21.x]
-        os: [windows-latest, mac-latest, ubuntu-latest]
+        include:
+          - node-version: 20.x   # fastest, so run first, to error fast
+            os: ubuntu-latest
+          - node-version: 21.x   # check newest non-lts too
+            os: ubuntu-latest
+          - node-version: 21.x   # check newest non-lts too
+            os: macos-latest
+          - node-version: 21.x   # check newest non-lts too
+            os: windows-latest
+          - node-version: 18.x   # older node builds for electron
+            os: ubuntu-latest
 
     runs-on: ${{ matrix.os }}
 

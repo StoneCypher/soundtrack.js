@@ -12,9 +12,9 @@
     "terser": "terser -c --ecma 2015 --module -o dist/soundtrack.js build/rollup/index.js",
     "terser_cjs": "terser -c -o dist/soundtrack.cjs build/rollup/index.cjs",
     "typedoc": "typedoc ./src/ts/index.ts --out ./docs/docs/",
-    "site": "cp ./dist/soundtrack.cs ./docs/demo/ && cp ./src/site -r ./docs/",
-    "build": "npm run clean && npm run typescript && npm run rollup && npm run terser && npm run terser_cjs && npm run typedoc",
-    "test": "vitest run --coverage --mode development --reporter=verbose"
+    "test": "vitest run --coverage --mode development --reporter=verbose",
+    "site": "cp ./dist/soundtrack.js ./docs/demo/ && cp ./src/site -r ./docs/",
+    "build": "npm run clean && npm run typescript && npm run rollup && npm run terser && npm run terser_cjs && npm run test && npm run typedoc && npm run site"
   },
   "repository": {
     "type": "git",
@@ -42,6 +42,7 @@
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-replace": "^5.0.5",
     "@vitest/coverage-v8": "^1.2.0",
+    "jsdom": "^23.2.0",
     "rimraf": "^5.0.5",
     "rollup": "^4.9.5",
     "terser": "^5.26.0",

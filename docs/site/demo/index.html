@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+
+  <head>
+
+    <script defer type="text/javascript" src="../dist/soundtrack.es5.js"></script>
+
+    <script defer type="text/javascript">
+
+      var soundtrack;
+
+      window.onload = function() {
+
+        var fineprecision = { name: 'ultralo' },
+            catchyguitar  = { name: 'catchyguitar', end_ofs: 110 },
+            config        = { tracks: [fineprecision, catchyguitar] };
+
+        soundtrack    = new (require('soundtrack').soundtrack)(config);
+
+      };
+
+    </script>
+
+  </head>
+
+  <body>
+  </body>
+
+</html>

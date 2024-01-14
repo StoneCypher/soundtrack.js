@@ -57,6 +57,7 @@ class Soundtrack {
 
   #ready          : boolean;
   #playing        : boolean;
+  #paused         : boolean;
   #current        : number | undefined;
 
   #players        : HTMLAudioElement[];
@@ -69,6 +70,7 @@ class Soundtrack {
     this.#tracks         = [];
     this.#tracks_by_name = new Map();
     this.#playing        = false;
+    this.#paused         = false;
     this.#ready          = false;
     this.#current        = undefined;
 
@@ -112,6 +114,8 @@ class Soundtrack {
 
       const this_player = this.#players[this.#current];
 
+      // typescript needs this test, but the branch is unreachable because the test is meaningless
+      /* v8 ignore next 3 */
       if (this_player === undefined) {
         throw new Error(`Player ${this_player}, referred to as current, does not exist`)
       }
@@ -162,6 +166,8 @@ class Soundtrack {
       case 'string':
         return this.play_by_name(track);
 
+      // typescript needs this test, but the branch is unreachable because the test is meaningless
+      /* v8 ignore next 2 */
       default:
         throw new Error('Attempted to play an unknown type; requires a string or a number');
 
@@ -173,9 +179,86 @@ class Soundtrack {
 
 
 
-  // stop
-  // pause
-  // seek
+  stop() {
+
+    const track = this.current_track;
+    if (track === undefined) { return; }
+
+    const player = this.#players[track];
+
+    // typescript needs this test, but the branch is unreachable because the test is meaningless
+    /* v8 ignore next 3 */
+    if (player === undefined) {
+      throw new Error(`Can't stop: indicated player #${this.current_track} doesn't exist`);
+    }
+
+    player.pause();
+    player.currentTime = 0;
+
+    this.#playing = false;
+    this.#paused  = false;
+    this.#current = undefined;
+
+  }
+
+
+
+
+
+  pause() {
+
+    const track = this.current_track;
+    if (track === undefined) { return; }
+
+    const player = this.#players[track];
+
+    // typescript needs this test, but the branch is unreachable because the test is meaningless
+    /* v8 ignore next 3 */
+    if (player === undefined) {
+      throw new Error(`Can't stop: indicated player #${this.current_track} doesn't exist`);
+    }
+
+    if (this.#paused) {
+
+      player.play();
+      this.#paused = false;
+
+    } else {
+
+      player.pause();
+      this.#paused = true;
+
+    }
+
+  }
+
+
+
+
+
+  seek(to_where: number) {
+
+    const track = this.current_track;
+    if (track === undefined) { return; }
+
+    const player = this.#players[track];
+
+    // typescript needs this test, but the branch is unreachable because the test is meaningless
+    /* v8 ignore next 3 */
+    if (player === undefined) {
+      throw new Error(`Can't stop: indicated player #${this.current_track} doesn't exist`);
+    }
+
+    // there's no sense testing browser features
+    /* v8 ignore next 1 */
+    player.currentTime = to_where;
+
+  }
+
+
+
+
+
   // fade out
   // fade switch
   // play variant with fade in
@@ -189,7 +272,7 @@ class Soundtrack {
     // scan once for problems before making changes
     tracks
       .map( this.normalize_track )
-      .forEach(t => {
+      .forEach( (t: TrackDefinition) => {
         if (this.has_track(t.name)) {
           throw new Error(`One or more of the listed tracks is already present: ${t}`);
         }
@@ -237,8 +320,24 @@ class Soundtrack {
 
 
 
+  get is_paused() {
+    return this.#paused;
+  }
+
+
+
+
+
   get is_ready() {
     return this.#ready;
+  }
+
+
+
+
+
+  get current_track() {
+    return this.#current;
   }
 
 
@@ -263,7 +362,7 @@ class Soundtrack {
     const host = this;
 
 
-    window.setInterval( () => {
+    setInterval( () => {
 
       let end_cut: number = (player.duration * 1000) - (endline ?? 0);  // todo: move this to one-time on player load, then add latching for initialization
 
@@ -297,31 +396,20 @@ class Soundtrack {
 
   normalize_track(track: TrackDefinition | string): TrackDefinition {
 
-    switch(typeof track) {
+    const u_track = (typeof track === 'object')? track : ({ name: track });
 
-
-      case 'object' :
-
-        if (!(track.name)) {
-          throw new Error(`New track definition missing name in normalize_track/1: ${JSON.stringify(track)}`);
-        }
-
-        let name         = track.name,
-            src          = track.src          ?? (track.name + '.mp3'),
-            start_offset = track.start_offset ?? 0,
-            end_offset   = track.end_offset   ?? 0,
-            loop_offset  = track.loop_offset  ?? 0,
-            loop         = track.loop         ?? true;
-
-        return { name, src, start_offset, end_offset, loop_offset, loop };
-
-
-      case 'string' :
-
-        return this.normalize_track({ name: track });
-
-
+    if (!(u_track.name)) {
+      throw new Error(`New track definition missing name in normalize_track/1: ${JSON.stringify(u_track)}`);
     }
+
+    let name         = u_track.name,
+        src          = u_track.src          ?? (u_track.name + '.mp3'),
+        start_offset = u_track.start_offset ?? 0,
+        end_offset   = u_track.end_offset   ?? 0,
+        loop_offset  = u_track.loop_offset  ?? 0,
+        loop         = u_track.loop         ?? true;
+
+    return { name, src, start_offset, end_offset, loop_offset, loop };
 
   }
 

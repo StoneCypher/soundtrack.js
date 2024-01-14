@@ -7,10 +7,10 @@ export default defineConfig({
   test : {
 
     globals: true,
-    include: ["./src/ts/**/*.spec.ts"],
+    include: ["src/ts/**/*.spec.ts"],
 
     coverage: {
-      exclude: ["./build/**/*", "./doc/**/*"]
+      exclude: ["build/**/*", "docs/**/*"]
     }
 
   }

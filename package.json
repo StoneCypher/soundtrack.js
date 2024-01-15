@@ -1,6 +1,6 @@
 {
   "name": "soundtrack.js",
-  "version": "0.10.1",
+  "version": "0.11.0",
   "type": "module",
   "description": "Make handling the soundtracks to your HTML5/JS games somewhat easier. ES6/JS2015 with CommonJS bindings.",
   "module": "dist/soundtrack.js",

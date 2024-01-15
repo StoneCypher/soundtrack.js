@@ -37,4 +37,14 @@ describe('Load track', () => {
   });
 
 
+  test('Undefined start offset', () => {
+    expect(() => foo.load_tracks([{ name: 'ooga', start_offset: undefined }])).toThrow();    // from original
+  });
+
+
+  test('Undefined endline', () => {
+    expect(() => foo.load_tracks([{ name: 'ooga', endline: undefined }])).toThrow();    // from original
+  });
+
+
 });

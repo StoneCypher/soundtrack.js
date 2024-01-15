@@ -1,6 +1,6 @@
 {
   "name": "soundtrack.js",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "type": "module",
   "description": "Make handling the soundtracks to your HTML5/JS games somewhat easier. ES6/JS2015 with CommonJS bindings.",
   "module": "dist/soundtrack.js",
@@ -13,7 +13,7 @@
     "terser_cjs": "terser -c -o dist/soundtrack.cjs build/rollup/index.cjs",
     "typedoc": "typedoc ./src/ts/index.ts --out ./docs/docs/",
     "test": "vitest run --coverage --mode development --reporter=verbose",
-    "site": "cp ./dist/soundtrack.js ./docs/demo/ && cp ./src/site -r ./docs/",
+    "site": "cp ./dist/soundtrack.js ./docs/demo/ && cp -r ./src/site/* ./docs/",
     "build": "npm run clean && npm run typescript && npm run rollup && npm run terser && npm run terser_cjs && npm run test && npm run typedoc && npm run site"
   },
   "repository": {
